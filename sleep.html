@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Sleep Debt Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0f7fa; /* Light blue background */
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff; /* White background for the form */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 900px;
+        }
+        .input-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* Seven columns for seven days */
+            gap: 10px; /* Space between items */
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .input-row label {
+            text-align: center;
+            color: #00796b; /* Darker teal color for text */
+            font-weight: bold;
+        }
+        .input-row input {
+            padding: 10px;
+            margin: 0;
+            border: 1px solid #00796b;
+            border-radius: 4px;
+            width: 100%;
+            text-align: center; /* Center text inside input */
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #00796b; /* Teal background for button */
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #004d40; /* Darker teal on hover */
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #004d40; /* Darker teal for result text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weekly Sleep Debt Tracker</h1>
+        <p>Enter the number of hours you slept each day:</p>
+        <form id="sleepForm">
+            <div class="input-row">
+                <label for="monday">Monday</label>
+                <label for="tuesday">Tuesday</label>
+                <label for="wednesday">Wednesday</label>
+                <label for="thursday">Thursday</label>
+                <label for="friday">Friday</label>
+                <label for="saturday">Saturday</label>
+                <label for="sunday">Sunday</label>
+            </div>
+            <div class="input-row">
+                <input type="number" id="monday" name="monday" min="0" step="0.1" required>
+                <input type="number" id="tuesday" name="tuesday" min="0" step="0.1" required>
+                <input type="number" id="wednesday" name="wednesday" min="0" step="0.1" required>
+                <input type="number" id="thursday" name="thursday" min="0" step="0.1" required>
+                <input type="number" id="friday" name="friday" min="0" step="0.1" required>
+                <input type="number" id="saturday" name="saturday" min="0" step="0.1" required>
+                <input type="number" id="sunday" name="sunday" min="0" step="0.1" required>
+            </div>
+            <button type="button" onclick="calculateSleepDebt()">Calculate Sleep Debt</button>
+        </form>
+        <div class="result">
+            <p id="debtMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        const recommendedHoursPerNight = 8; // Adjust this value as needed
+
+        function calculateSleepDebt() {
+            // Get the hours slept from the input fields
+            const monday = parseFloat(document.getElementById('monday').value) || 0;
+            const tuesday = parseFloat(document.getElementById('tuesday').value) || 0;
+            const wednesday = parseFloat(document.getElementById('wednesday').value) || 0;
+            const thursday = parseFloat(document.getElementById('thursday').value) || 0;
+            const friday = parseFloat(document.getElementById('friday').value) || 0;
+            const saturday = parseFloat(document.getElementById('saturday').value) || 0;
+            const sunday = parseFloat(document.getElementById('sunday').value) || 0;
+
+            // Calculate total hours slept
+            const totalHoursSlept = monday + tuesday + wednesday + thursday + friday + saturday + sunday;
+
+            // Calculate total recommended hours for the week
+            const totalRecommendedHours = recommendedHoursPerNight * 7;
+
+            // Calculate sleep debt
+            const sleepDebt = totalRecommendedHours - totalHoursSlept;
+
+            // Display result
+            let message;
+            if (sleepDebt > 0) {
+                message = `You have a sleep debt of ${sleepDebt.toFixed(1)} hours for the week.`;
+            } else if (sleepDebt < 0) {
+                message = `You have a sleep surplus of ${Math.abs(sleepDebt).toFixed(1)} hours for the week.`;
+            } else {
+                message = `You have met your sleep goal for the week.`;
+            }
+
+            document.getElementById('debtMessage').innerText = message;
+        }
+    </script>
+</body>
+</html>

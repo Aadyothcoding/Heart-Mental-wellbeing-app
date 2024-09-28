@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meditation Timer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F0F4F8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #00796B;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        select, button {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #CFD8DC;
+            width: 100%;
+            max-width: 300px;
+        }
+        button {
+            background-color: #00796B;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #004D40;
+        }
+        .clock {
+            margin-top: 20px;
+            font-size: 48px;
+            color: #D32F2F;
+        }
+        .hidden {
+            display: none;
+        }
+        audio {
+            display: none;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .controls button {
+            width: 30%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Meditation Timer</h1>
+        <label for="duration">Select your meditation duration:</label><br>
+        <select id="duration">
+            <option value="300">5 Minutes</option>
+            <option value="600">10 Minutes</option>
+            <option value="1200">20 Minutes</option>
+        </select><br>
+        <button onclick="startMeditation()">Start Meditation</button>
+
+        <div class="clock hidden" id="clock">00:00</div>
+
+        <div class="controls hidden" id="controls">
+            <button onclick="stopMeditation()">Stop</button>
+            <button onclick="resetMeditation()">Reset</button>
+        </div>
+
+        <!-- Audio reference updated to load from static folder -->
+        <audio id="meditationMusic" loop>
+            <source src="{{ url_for('static', filename='peaceful-mantra-240925.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <script>
+        let timer;
+        let timeRemaining;
+        let clock = document.getElementById("clock");
+        let music = document.getElementById("meditationMusic");
+        let controls = document.getElementById("controls");
+
+        function startMeditation() {
+            let duration = document.getElementById("duration").value;
+            timeRemaining = parseInt(duration);
+
+            document.querySelector('button').disabled = true;
+            clock.classList.remove("hidden");
+            controls.classList.remove("hidden");
+            music.play();
+
+            // Timer countdown function
+            timer = setInterval(() => {
+                let minutes = Math.floor(timeRemaining / 60);
+                let seconds = timeRemaining % 60;
+
+                // Update the clock display
+                clock.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    clock.innerHTML = "00:00";
+                    music.pause();
+                    alert("Meditation Complete!");
+                    resetMeditation();
+                }
+
+                timeRemaining--;
+            }, 1000);
+        }
+
+        function stopMeditation() {
+            clearInterval(timer);
+            music.pause();
+            document.querySelector('button').disabled = false;
+        }
+
+        function resetMeditation() {
+            clearInterval(timer);
+            clock.innerHTML = "00:00";
+            music.pause();
+            music.currentTime = 0;
+            document.querySelector('button').disabled = false;
+            clock.classList.add("hidden");
+            controls.classList.add("hidden");
+        }
+    </script>
+
+</body>
+</html>

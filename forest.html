@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Heart Health Prediction</title>
+
+  <!-- Google Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f3f7f9; /* Soft background to evoke a calm atmosphere */
+    }
+
+    /* Navigation */
+    nav {
+      background: #00796b; /* Healthcare-related teal color */
+    }
+    nav a.brand-logo {
+      font-weight: bold;
+      font-size: 1.6rem;
+    }
+    .brand-logo i {
+      color: red;
+    }
+
+    /* Header Section */
+    .header {
+      margin-top: 50px;
+      font-size: 3.2rem;
+      font-weight: bold;
+      color: #e53935; /* Heart health red */
+    }
+    .header.light {
+      font-weight: 300;
+      color: #37474f; /* Soft dark color */
+    }
+    h5 {
+      font-weight: 400;
+      color: #00796b;
+    }
+
+    /* Form Styles */
+    .input-field input[type=number]:focus + label {
+      color: #e53935 !important; /* Heart color for focus */
+    }
+    .input-field input[type=number]:focus {
+      border-bottom: 2px solid #e53935 !important;
+      box-shadow: none;
+    }
+    .btn-large {
+      background-color: #e53935; /* Red for action buttons */
+    }
+    .btn-large:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Heart Icon */
+    .heart-icon {
+      color: #e53935;
+      font-size: 4rem;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #00796b;
+    }
+    footer h5 {
+      font-weight: bold;
+    }
+    footer a {
+      color: #80cbc4 !important;
+    }
+    .footer-copyright {
+      background-color: #004d40;
+    }
+
+    /* Additional Spacing */
+    .container {
+      max-width: 960px;
+    }
+    .row {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo"><i class="material-icons">favorite</i>Heart Health Prediction</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">About Us</a></li>
+      </ul>
+      <ul id="nav-mobile" class="sidenav">
+        <li><a href="#">About Us</a></li>
+      </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <h1 class="header center"><i class="material-icons heart-icon">favorite</i>Heart Health Prediction</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Predict your heart health based on important medical data</h5>
+      </div>
+
+      <!-- Form for heart health data -->
+      <div class="row">
+        <form action='/predict' method="POST" class="col s12">
+          <div class="row">
+            <div class="input-field col s4">
+              <label for="age"><b>Age</b></label>
+              <input id="age" name='Age' type="number" class="validate" required>
+            </div>
+            <div class="input-field col s4">
+              <label for="sex"><b>Sex</b> (M=1, F=0)</label>
+              <input id="sex" name="Sex" type="number" class="validate" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s4">
+              <label for="bp"><b>Blood Pressure</b> (SBP)</label>
+              <input id="bp" name="BP" type="number" class="validate" required>
+            </div>
+            <div class="input-field col s4">
+              <label for="cholesterol"><b>Cholesterol</b></label>
+              <input id="cholesterol" name="Cholesterol" type="number" class="validate" required>
+            </div>
+            <div class="input-field col s4">
+              <label for="maxhr"><b>Heart Rate</b> (Normal HR)</label>
+              <input id="maxhr" name="MaxHR" type="number" class="validate" required>
+            </div>
+          </div>
+
+          <div class="row center">
+            <button type="submit" class="btn-large waves-effect waves-light">Predict Now</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Output section for prediction result -->
+      <div class="row center">
+        <h4><b>{{ pred }}</b></h4>
+        <p>{{ bhai }}</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">About the Project</h5>
+          <p class="grey-text text-lighten-4">Our goal is to help individuals assess their heart health using important data points like age, blood pressure, cholesterol, and heart rate.</p>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Links</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Home</a></li>
+            <li><a class="white-text" href="#!">About Us</a></li>
+            <li><a class="white-text" href="#!">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.sidenav');
+      var instances = M.Sidenav.init(elems);
+    });
+  </script>
+</body>
+</html>
